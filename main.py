@@ -1,9 +1,13 @@
+import os
 from typing import  Final
 from telegram import Update
 from telegram.ext import Application, CommandHandler, MessageHandler, filters, ContextTypes
+from dotenv import load_dotenv
 
-TOKEN:Final = '8559884782:AAGd_MHZGprR9FU6ZKQyr6RL6qW90CBbtv8'
-BOT_USERNAME:Final = '@mfindoai_bot'
+load_dotenv()
+
+TOKEN:Final = os.getenv('token')
+BOT_USERNAME:Final = os.getenv('BOT_USERNAME')
 
 async def start_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text("Hello! How you're doing?")
