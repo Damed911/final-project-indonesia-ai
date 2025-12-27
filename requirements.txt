@@ -1,2 +1,6 @@
 fastapi
-python-telegram-bot===21.11.1
+python-telegram-bot
+requests
+python-dotenv
+pydantic
+uvicorn

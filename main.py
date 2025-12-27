@@ -3,11 +3,13 @@ from typing import  Final
 from telegram import Update
 from telegram.ext import Application, CommandHandler, MessageHandler, filters, ContextTypes
 from dotenv import load_dotenv
+import requests
 
 load_dotenv()
 
 TOKEN:Final = os.getenv('token')
 BOT_USERNAME:Final = os.getenv('BOT_USERNAME')
+API_URL = os.getenv('AI_SERVICE_URL')
 
 async def start_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text("Hello! How you're doing?")
@@ -15,13 +17,15 @@ async def start_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
 async def update_command(update:Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text("Understood! Data will be updated. Please hold on a second")
 
-def handler_response(text:str) -> str:
-    lowercase = text.lower()
+def handler_response(text:str):
 
-    if 'beli' in lowercase:
-        return 'Berikut adalah transaksi yang kamu masukkan.'
+    data = {'text': text}
 
-    return 'Masukkan data yang lebih mudah dipahami'
+    response = requests.post(f"{API_URL}/transaction", json=data)
+
+    result = response.json()
+
+    return result['message']
 
 async def handler_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
     message_type = update.message.chat.type
